@@ -31,12 +31,12 @@ public class Login extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         usernameTf = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        passwordTf = new javax.swing.JTextField();
-        loginChoice = new javax.swing.JComboBox();
+        choiceCb = new javax.swing.JComboBox();
         loginB = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         regStudentB = new javax.swing.JButton();
         regCompanyB = new javax.swing.JButton();
+        passwordPf = new javax.swing.JPasswordField();
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Internship Portal");
@@ -45,7 +45,7 @@ public class Login extends javax.swing.JPanel {
 
         jLabel3.setText("Password:");
 
-        loginChoice.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Student", "Company" }));
+        choiceCb.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Student", "Company" }));
 
         loginB.setText("Sign In");
 
@@ -86,7 +86,7 @@ public class Login extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(loginChoice, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(choiceCb, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(loginB))
                     .addGroup(layout.createSequentialGroup()
@@ -96,7 +96,7 @@ public class Login extends javax.swing.JPanel {
                         .addGap(88, 88, 88)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(usernameTf)
-                            .addComponent(passwordTf))))
+                            .addComponent(passwordPf))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -113,10 +113,10 @@ public class Login extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(passwordTf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(passwordPf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(loginChoice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(choiceCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(loginB))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -126,13 +126,13 @@ public class Login extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JComboBox choiceCb;
     public javax.swing.JLabel jLabel1;
     public javax.swing.JLabel jLabel2;
     public javax.swing.JLabel jLabel3;
     public javax.swing.JPanel jPanel1;
     public javax.swing.JButton loginB;
-    public javax.swing.JComboBox loginChoice;
-    public javax.swing.JTextField passwordTf;
+    public javax.swing.JPasswordField passwordPf;
     public javax.swing.JButton regCompanyB;
     public javax.swing.JButton regStudentB;
     public javax.swing.JTextField usernameTf;

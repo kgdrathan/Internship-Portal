@@ -22,7 +22,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jPanel1" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="loginChoice" min="-2" pref="147" max="-2" attributes="0"/>
+                      <Component id="choiceCb" min="-2" pref="147" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="loginB" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -34,7 +34,7 @@
                       <EmptySpace min="-2" pref="88" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="usernameTf" max="32767" attributes="0"/>
-                          <Component id="passwordTf" max="32767" attributes="0"/>
+                          <Component id="passwordPf" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -59,11 +59,11 @@
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="passwordTf" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="passwordPf" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="loginChoice" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="choiceCb" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="loginB" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -92,9 +92,7 @@
         <Property name="text" type="java.lang.String" value="Password:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="passwordTf">
-    </Component>
-    <Component class="javax.swing.JComboBox" name="loginChoice">
+    <Component class="javax.swing.JComboBox" name="choiceCb">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="2">
@@ -156,5 +154,7 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JPasswordField" name="passwordPf">
+    </Component>
   </SubComponents>
 </Form>
