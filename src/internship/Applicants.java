@@ -5,17 +5,96 @@
  */
 package internship;
 
+import static internship.Degrees.conn;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author mrx
  */
 public class Applicants extends javax.swing.JFrame {
 
+    static String[] status = {"APPLIED", "SHORTLISTED", "SELECTED"};
+    
+    static Connection conn;
+    static Statement st;
+    static ResultSet rs;
+    static PreparedStatement ps;
+    
+    static DefaultTableModel tm_apply;
+    static String intern_id = "";
     /**
      * Creates new form Applicants
      */
-    public Applicants() {
+    public Applicants(String iid) {
         initComponents();
+        intern_id = iid;
+                
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(Degrees.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://10.5.18.66:3306/12CS30001", "12CS30001", "dual12");
+            st = conn.createStatement();
+            tm_apply = (DefaultTableModel)this.apply_table.getModel();
+            
+            rs = st.executeQuery("SELECT roll_no, name, status FROM application NATURAL JOIN student WHERE internship_id = " + intern_id);
+            int count = 1;
+            while(rs.next()) {
+                JComboBox tmp = new JComboBox();
+                for(String i : status)
+                    tmp.addItem(i);
+                tmp.setSelectedIndex(rs.getInt("status"));
+                tm_apply.addRow(new Object[] {count, rs.getString("roll_no"), rs.getString("name"), tmp});
+                count++;
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Degrees.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        updateB.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                int rowCount = apply_table.getRowCount();
+                try {
+                    for(int i = 0; i < rowCount; ++i) {
+                        String roll = (String)apply_table.getValueAt(i, 1);
+                        int val = ((JComboBox)apply_table.getValueAt(i, 3)).getSelectedIndex();
+                        ps = conn.prepareStatement("UPDATE application SET status = " + val + " WHERE internship_id = " + intern_id + " AND roll_no = '" + roll + "'");
+                        ps.executeUpdate();
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(Degrees.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                dispose();
+            }
+        });
+        
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                setVisible(true);
+            }
+        });
     }
 
     /**
@@ -29,15 +108,15 @@ public class Applicants extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        apply_table = new javax.swing.JTable();
+        updateB = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Applicants");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        apply_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -60,9 +139,9 @@ public class Applicants extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(apply_table);
 
-        jButton1.setText("Done");
+        updateB.setText("Update");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -75,7 +154,7 @@ public class Applicants extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
+                        .addComponent(updateB)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -85,7 +164,7 @@ public class Applicants extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
+                .addComponent(updateB)
                 .addContainerGap())
         );
 
@@ -122,15 +201,15 @@ public class Applicants extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Applicants().setVisible(true);
+                new Applicants("").setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JTable apply_table;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JButton updateB;
     // End of variables declaration//GEN-END:variables
 }

@@ -25,7 +25,7 @@ public class Company extends javax.swing.JPanel {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    public void initComponents() {
 
         nameTf = new javax.swing.JLabel();
         tabPane = new javax.swing.JTabbedPane();
@@ -62,7 +62,7 @@ public class Company extends javax.swing.JPanel {
         new_submit = new javax.swing.JButton();
         tab_all = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        all_table = new javax.swing.JTable();
         tab_notice = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -258,7 +258,7 @@ public class Company extends javax.swing.JPanel {
 
         tabPane.addTab("New Internship", tab_new);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        all_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -281,7 +281,7 @@ public class Company extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable1);
+        jScrollPane2.setViewportView(all_table);
 
         javax.swing.GroupLayout tab_allLayout = new javax.swing.GroupLayout(tab_all);
         tab_all.setLayout(tab_allLayout);
@@ -384,50 +384,50 @@ public class Company extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextArea comp_addr;
-    private javax.swing.JLabel comp_cat;
-    private javax.swing.JLabel comp_id;
-    private javax.swing.JButton comp_logout;
-    private javax.swing.JLabel comp_name;
-    private javax.swing.JLabel comp_sector;
-    private javax.swing.JLabel comp_site;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JLabel nameTf;
-    private javax.swing.JTextField new_cgpa;
-    private javax.swing.JButton new_degrees;
-    private javax.swing.JTextField new_endDate;
-    private javax.swing.JTextField new_interview;
-    private javax.swing.JTextField new_process;
-    private javax.swing.JTextField new_profile;
-    private javax.swing.JTextField new_stipend;
-    private javax.swing.JButton new_submit;
-    private javax.swing.JTextField notice_headTf;
-    private javax.swing.JButton notice_postB;
-    private javax.swing.JComboBox notice_subCb;
-    private javax.swing.JTextArea notice_textTa;
-    private javax.swing.JTabbedPane tabPane;
-    private javax.swing.JPanel tab_all;
-    private javax.swing.JPanel tab_company;
-    private javax.swing.JPanel tab_new;
-    private javax.swing.JPanel tab_notice;
+    public javax.swing.JTable all_table;
+    public javax.swing.JTextArea comp_addr;
+    public javax.swing.JLabel comp_cat;
+    public javax.swing.JLabel comp_id;
+    public javax.swing.JButton comp_logout;
+    public javax.swing.JLabel comp_name;
+    public javax.swing.JLabel comp_sector;
+    public javax.swing.JLabel comp_site;
+    public javax.swing.JLabel jLabel1;
+    public javax.swing.JLabel jLabel10;
+    public javax.swing.JLabel jLabel11;
+    public javax.swing.JLabel jLabel14;
+    public javax.swing.JLabel jLabel15;
+    public javax.swing.JLabel jLabel16;
+    public javax.swing.JLabel jLabel17;
+    public javax.swing.JLabel jLabel18;
+    public javax.swing.JLabel jLabel2;
+    public javax.swing.JLabel jLabel3;
+    public javax.swing.JLabel jLabel4;
+    public javax.swing.JLabel jLabel5;
+    public javax.swing.JLabel jLabel6;
+    public javax.swing.JLabel jLabel7;
+    public javax.swing.JLabel jLabel8;
+    public javax.swing.JLabel jLabel9;
+    public javax.swing.JScrollPane jScrollPane1;
+    public javax.swing.JScrollPane jScrollPane2;
+    public javax.swing.JScrollPane jScrollPane3;
+    public javax.swing.JLabel nameTf;
+    public javax.swing.JTextField new_cgpa;
+    public javax.swing.JButton new_degrees;
+    public javax.swing.JTextField new_endDate;
+    public javax.swing.JTextField new_interview;
+    public javax.swing.JTextField new_process;
+    public javax.swing.JTextField new_profile;
+    public javax.swing.JTextField new_stipend;
+    public javax.swing.JButton new_submit;
+    public javax.swing.JTextField notice_headTf;
+    public javax.swing.JButton notice_postB;
+    public javax.swing.JComboBox notice_subCb;
+    public javax.swing.JTextArea notice_textTa;
+    public javax.swing.JTabbedPane tabPane;
+    public javax.swing.JPanel tab_all;
+    public javax.swing.JPanel tab_company;
+    public javax.swing.JPanel tab_new;
+    public javax.swing.JPanel tab_notice;
     // End of variables declaration//GEN-END:variables
 }

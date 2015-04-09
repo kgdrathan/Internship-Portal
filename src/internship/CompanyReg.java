@@ -25,7 +25,7 @@ public class CompanyReg extends javax.swing.JPanel {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    public void initComponents() {
 
         catTf = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -130,26 +130,26 @@ public class CompanyReg extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void siteTfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siteTfActionPerformed
+    public void siteTfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siteTfActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_siteTfActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextArea addressTa;
-    private javax.swing.JTextField catTf;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField nameTf;
-    private javax.swing.JPasswordField passPf;
-    private javax.swing.JButton regB;
-    private javax.swing.JTextField sectorTf;
-    private javax.swing.JTextField siteTf;
+    public javax.swing.JTextArea addressTa;
+    public javax.swing.JTextField catTf;
+    public javax.swing.JLabel jLabel1;
+    public javax.swing.JLabel jLabel2;
+    public javax.swing.JLabel jLabel3;
+    public javax.swing.JLabel jLabel4;
+    public javax.swing.JLabel jLabel5;
+    public javax.swing.JLabel jLabel6;
+    public javax.swing.JLabel jLabel7;
+    public javax.swing.JScrollPane jScrollPane1;
+    public javax.swing.JTextField nameTf;
+    public javax.swing.JPasswordField passPf;
+    public javax.swing.JButton regB;
+    public javax.swing.JTextField sectorTf;
+    public javax.swing.JTextField siteTf;
     // End of variables declaration//GEN-END:variables
 }

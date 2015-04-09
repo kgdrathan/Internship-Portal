@@ -5,19 +5,87 @@
  */
 package internship;
 
+import static internship.Internship.conn;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author mrx
  */
 public class Degrees extends javax.swing.JFrame {
 
+    static String[] degrees = {"BTECH", "MTECH", "DUAL DEGREE", "MSC", "PHD"};
+    static String query = "INSERT INTO allowed_degree VALUES ";
+    
+    static Connection conn;
+    static Statement st;
+    static ResultSet rs;
+    static PreparedStatement ps;
+    
+    static DefaultTableModel tm_degrees;
     /**
      * Creates new form Degrees
      */
     public Degrees() {
         initComponents();
+                
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(Degrees.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://10.5.18.66:3306/12CS30001", "12CS30001", "dual12");
+            st = conn.createStatement();
+            tm_degrees = (DefaultTableModel)this.degree_table.getModel();
+            
+            rs = st.executeQuery("SELECT dept_name FROM department");
+            while(rs.next())
+                for(int i = 0; i < 5; ++i)
+                    tm_degrees.addRow(new Object[] {new JCheckBox(), rs.getString("dept_name"), degrees[i]});
+        } catch (Exception ex) {
+            Logger.getLogger(Degrees.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        submitB.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                int rowCount = tm_degrees.getRowCount();
+                for(int i = 0; i < rowCount; ++i)
+                    if(((JCheckBox)(degree_table.getValueAt(i, 0))).isSelected())
+                        query += "(? , '" + degree_table.getValueAt(i, 1) + "', '" + degree_table.getValueAt(i, 2) + "'), ";
+                dispose();
+            }
+        });
+        
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                setVisible(true);
+            }
+        });
     }
 
+    public String getDegrees() {
+        return query;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -29,15 +97,15 @@ public class Degrees extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        degree_table = new javax.swing.JTable();
+        submitB = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Degrees");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        degree_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -60,9 +128,9 @@ public class Degrees extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(degree_table);
 
-        jButton1.setText("Submit");
+        submitB.setText("Submit");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -75,7 +143,7 @@ public class Degrees extends javax.swing.JFrame {
                     .addComponent(jScrollPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
+                        .addComponent(submitB)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -85,7 +153,7 @@ public class Degrees extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
+                .addComponent(submitB)
                 .addContainerGap())
         );
 
@@ -128,9 +196,9 @@ public class Degrees extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JTable degree_table;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JButton submitB;
     // End of variables declaration//GEN-END:variables
 }

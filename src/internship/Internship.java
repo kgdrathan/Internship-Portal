@@ -10,9 +10,9 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.*;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.logging.*;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -22,13 +22,12 @@ public class Internship extends JFrame {
 
     // <editor-fold defaultstate="collapsed" desc="All variables">
     static final String EMAIL_REGEX = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
-    static final String LOGIN = "login";
-    static final String STUDENTREG = "studentreg";
-    static final String MANAGER = "manager";
     
     static Internship internship;
     static Login login;
     static StudentReg studentReg;
+    static CompanyReg companyReg;
+    static Company company;
     
     static Container pane;
     static CardLayout cl;
@@ -41,7 +40,10 @@ public class Internship extends JFrame {
     static ResultSet rs, rs2;
     
     static String currentRoll = "";
-    static int currentCom = 0;
+    static String query = "";
+    static int currentComp = 0;
+    
+    static DefaultTableModel tm_all;
     // </editor-fold>
     
     /**
@@ -67,20 +69,24 @@ public class Internship extends JFrame {
     
     static void showLogin() {
         setsize(400, 270);
-        cl.show(pane, LOGIN);
+        cl.show(pane, "LOGIN");
     }
     
     static void showStudentReg() {
         setsize(599, 320);
         try {
-            rs = st.executeQuery("SELECT department FROM dept_degree GROUP BY department");
+            rs = st.executeQuery("SELECT dept_name FROM department");
             while(rs.next())
-                studentReg.deptCb.addItem(rs.getString("department"));
+                studentReg.deptCb.addItem(rs.getString("dept_name"));
         } catch (Exception ex) {
             System.err.println("err showStudentReg 01:"+ex);
         }
         
-        cl.show(pane, STUDENTREG);
+        cl.show(pane, "STUDENTREG");
+    }
+    
+    static void showCompanyReg() {
+        
     }
     
     static void showStudent() {
@@ -88,7 +94,33 @@ public class Internship extends JFrame {
     }
     
     static void showCompany() {
-        
+        try {
+            rs = st.executeQuery("SELECT * FROM company WHERE company_id = " + currentComp);
+            if(rs.next()) {
+                company.comp_id.setText(rs.getString("company_id"));
+                company.comp_name.setText(rs.getString("company_name"));
+                company.comp_addr.setText(rs.getString("address"));
+                company.comp_site.setText(rs.getString("website"));
+                company.comp_cat.setText("category");
+                company.comp_sector.setText("sector");
+            }
+            
+            rs = st.executeQuery("SELECT internship_id, profile FROM internship WHERE company_id = " + currentComp);
+            tm_all = (DefaultTableModel) company.all_table.getModel();
+            while(rs.next()) {
+                JButton tmp = new JButton("Applicants_" + rs.getInt("internship_id"));
+                tmp.addMouseListener(new MouseAdapter() {
+                    public void mouseClicked(MouseEvent e) {
+                        Applicants aa = new Applicants(((JButton)(e.getSource())).getText().substring(11));
+                    }
+                });
+                tm_all.addRow(new Object[] {rs.getInt("internship_id"), rs.getString("profile"), });
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Internship.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        setsize(482, 445);
+        cl.show(pane, "COMPANY");
     }
     
     static void setListeners() {
@@ -118,18 +150,19 @@ public class Internship extends JFrame {
                         showe("Please check your ID once again!");
                     }
                 }
+                // TODO : reset all fields
             }
         });
         
         login.regCompanyB.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                showCompany();
+                showCompanyReg();
             }
         });
         
         login.regStudentB.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                showStudent();
+                showStudentReg();
             }
         });
         
@@ -144,9 +177,7 @@ public class Internship extends JFrame {
                 if(studentReg.rollTf.getText().equals("") ||
                    studentReg.nameTf.getText().equals("") ||
                    studentReg.emailTf.getText().equals("") ||
-                   studentReg.phoneTf.getText().equals("") ||
-                   studentReg.emailTf.getText().matches(EMAIL_REGEX) ||
-                   new String(login.passwordPf.getPassword()).equals(""))
+                   studentReg.phoneTf.getText().equals(""))
                     showe("None of the fields can be empty or Invalid!!");
                 
                 else {
@@ -347,11 +378,143 @@ public class Internship extends JFrame {
                         
                         // TODO : clear all fields
                         
-                        cl.show(pane, LOGIN);
+                        cl.show(pane, "LOGIN");
                     } catch(Exception ex) {
                         showe("Academic Qualification\nNone of the fields can be empty or Invalid!!");
                     }
                 }
+            }
+        });
+        
+        companyReg.regB.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if(companyReg.nameTf.getText().equals("") ||
+                    new String(companyReg.passPf.getPassword()).equals("") ||
+                    companyReg.addressTa.getText().equals("") ||
+                    companyReg.siteTf.getText().equals("") ||
+                    companyReg.catTf.getText().equals("") ||
+                    companyReg.sectorTf.getText().equals(""))
+                    showe("None of the fields can be empty or Invalid!!");
+                else {
+                    try {
+                        ps = conn.prepareStatement("INSERT INTO academic_qualification VALUES(NULL, ?, ?, ?, ?, ?)");
+                        ps.setString(1, companyReg.nameTf.getText());
+                        ps.setString(2, companyReg.addressTa.getText());
+                        ps.setString(3, companyReg.siteTf.getText());
+                        ps.setString(4, companyReg.catTf.getText());
+                        ps.setString(5, companyReg.sectorTf.getText());
+                        ps.executeUpdate();
+                        
+                        rs = st.executeQuery("SELECT company_id FROM company WHERE company_name = '" + companyReg.nameTf.getText() + "'");
+                        if(rs.next()) {
+                            currentComp = rs.getInt("company_id");
+                        }
+                        
+                        ps = conn.prepareStatement("INSERT INTO company_progress VALUES (?, ?)");
+                        ps.setInt(1, currentComp);
+                        ps.setString(2, new String(companyReg.passPf.getPassword()));
+                        ps.executeUpdate();
+                        showi("Your Company ID : " + currentComp);
+                        
+                        // TODO : clear all fields
+                        
+                        cl.show(pane, "LOGIN");
+                    } catch(Exception ex) {
+                        showe("None of the fields can be empty or Invalid!!");
+                    }
+                }
+            }
+        });
+        
+        company.comp_logout.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                // TODO : reset tables, labels, fields
+                
+                cl.show(pane, "LOGIN");
+            }
+        });
+        
+        company.new_degrees.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                Degrees degrees = new Degrees();
+                query = degrees.getDegrees();
+            }
+        });
+        
+        company.new_submit.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if(company.new_profile.getText().equals("") ||
+                    company.new_stipend.getText().equals("") ||
+                    company.new_cgpa.getText().equals("") ||
+                    company.new_process.getText().equals("") ||
+                    company.new_endDate.getText().equals("") ||
+                    company.new_interview.getText().equals(""))
+                    showe("None of the fields can be empty or Invalid!!");
+                else {
+                    try {
+                        ps = conn.prepareStatement("INSERT INTO internship VALUES(NULL, ?, ?, ?, ?, ?, ?, ?)");
+                        ps.setInt(1, currentComp);
+                        ps.setString(2, company.new_profile.getText());
+                        ps.setString(3, company.new_stipend.getText());
+                        ps.setString(4, company.new_cgpa.getText());
+                        ps.setString(5, company.new_process.getText());
+                        ps.setString(6, company.new_endDate.getText());
+                        ps.setString(7, studentReg.acadq_yearTf.getText());
+                        ps.setString(8, company.new_interview.getText());
+                        ps.executeUpdate();
+                        
+                        rs = st.executeQuery("SELECT internship_id FROM internship WHERE company_id = "
+                                + currentComp + " AND profile = '" + company.new_profile.getText() + "'");
+                        String intern_id = "";
+                        if(rs.next())
+                            intern_id = rs.getString("internship_id");
+                        query = query.replace("?", intern_id);
+                        ps = conn.prepareStatement(query.substring(0, query.length()-2));
+                        ps.executeUpdate();
+                        query = "";
+                        
+                        // TODO : clear all fields
+                    } catch(Exception ex) {
+                        showe("Interview\nNone of the fields can be empty or Invalid!!");
+                    }
+                }
+            }
+        });
+        
+        company.notice_subCb.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if(company.notice_headTf.getText().equals("") ||
+                    company.notice_textTa.getText().equals(""))
+                    showe("None of the fields can be empty or Invalid!!");
+                else {
+                    try {
+                        ps = conn.prepareStatement("INSERT INTO notice VALUES(NULL, ?, ?, ?, ?, ?, ?, ?)");
+                        ps.setInt(1, currentComp);
+                        ps.setString(2, company.new_profile.getText());
+                        ps.setString(3, company.new_stipend.getText());
+                        ps.setString(4, company.new_cgpa.getText());
+                        ps.setString(5, company.new_process.getText());
+                        ps.setString(6, company.new_endDate.getText());
+                        ps.setString(7, studentReg.acadq_yearTf.getText());
+                        ps.setString(8, company.new_interview.getText());
+                        ps.executeUpdate();
+                        
+                        rs = st.executeQuery("SELECT internship_id FROM internship WHERE company_id = "
+                                + currentComp + " AND profile = '" + company.new_profile.getText() + "'");
+                        String intern_id = "";
+                        if(rs.next())
+                            intern_id = rs.getString("internship_id");
+                        query = query.replace("?", intern_id);
+                        ps = conn.prepareStatement(query.substring(0, query.length()-2));
+                        ps.executeUpdate();
+                        query = "";
+                        
+                        // TODO : clear all fields
+                    } catch(Exception ex) {
+                        showe("Interview\nNone of the fields can be empty or Invalid!!");
+                    }
+                }
+                // TODO : reset all fields
             }
         });
     }
@@ -410,6 +573,8 @@ public class Internship extends JFrame {
                     internship = new Internship();
                     login = new Login();
                     studentReg = new StudentReg();
+                    companyReg = new CompanyReg();
+                    company = new Company();
                     
                     Class.forName("com.mysql.jdbc.Driver");
                     conn = DriverManager.getConnection("jdbc:mysql://10.5.18.66:3306/12CS30001", "12CS30001", "dual12");
@@ -426,13 +591,14 @@ public class Internship extends JFrame {
                     stu_pane = studentReg.getRootPane();
                     stu_cl = (CardLayout) studentReg.getLayout();
                     
-                    pane.add(login, LOGIN);
-                    pane.add(studentReg, STUDENTREG);
-                    
+                    pane.add(login, "LOGIN");
+                    pane.add(studentReg, "STUDENTREG");
+                    pane.add(companyReg, "COMPANYREG");
+                    pane.add(company, "COMPANY");
                     setListeners();
                     showLogin();
                 } catch (Exception ex) {
-                    System.err.println("err main 02:"+ex);
+                    Logger.getLogger(Internship.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
                 
